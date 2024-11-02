@@ -11,14 +11,24 @@ const path = require('node:path')
 // We import our logger middleware
 const { logger } = require('./middleware/logger')
 
+// We import our errorHandler middleware
+const errorHandler = require('./middleware/errorHandler')
+
+// We import the cookie-parser 3rd party Express middleware
+const cookieParser = require('cookie-parser')
+
 // We define the constant for the port
 const PORT = process.env.PORT || 3500
 
-// Logger middleware to track requests
+// 'logger' middleware to track requests
 app.use(logger)
 
 // Built in middleware in Express to parse incoming requests with JSON
 app.use(express.json())
+
+/* 3rd party Express middleware to handle the 
+cookies sent from the client to the server */
+app.use(cookieParser())
 
 // We provide our app the route to look for static files
 app.use('/', express.static(path.join(__dirname, 'public')))
@@ -40,6 +50,9 @@ app.all('*', (req, res)=> {
     res.type('txt').send('404 - Not found')
   }
 })
+
+// 'errorHandler' custom middleware to handle the errors
+app.use(errorHandler)
 
 // We order our app to start listening
 app.listen(PORT, ()=> console.log(`Server running on port ${PORT}...`))
