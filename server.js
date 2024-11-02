@@ -1,15 +1,27 @@
 // We define Express
 const express = require('express')
+
 // We define our app
 const app = express()
+
 /* We import the 'path' module to provide utilities 
 for working with file and directory paths */
 const path = require('node:path')
+
+// We import our logger middleware
+const { logger } = require('./middleware/logger')
+
 // We define the constant for the port
 const PORT = process.env.PORT || 3500
 
+// Logger middleware to track requests
+app.use(logger)
+
+// Built in middleware in Express to parse incoming requests with JSON
+app.use(express.json())
+
 // We provide our app the route to look for static files
-app.use('/', express.static(path.join(__dirname, '/public')))
+app.use('/', express.static(path.join(__dirname, 'public')))
 
 // We require the root of our router
 app.use('/', require('./routes/root'))
