@@ -17,11 +17,20 @@ const errorHandler = require('./middleware/errorHandler')
 // We import the cookie-parser 3rd party Express middleware
 const cookieParser = require('cookie-parser')
 
+// We import the Cross-Origin Resource Sharing middleware
+const cors = require('cors')
+
+//
+const corsOptions = require('./config/corsOptions')
+
 // We define the constant for the port
 const PORT = process.env.PORT || 3500
 
 // 'logger' middleware to track requests
 app.use(logger)
+
+// CORS
+app.use(cors(corsOptions))
 
 // Built in middleware in Express to parse incoming requests with JSON
 app.use(express.json())
