@@ -1,3 +1,7 @@
+/* This allows us to use the environment
+ variable throughout our package */
+require('dotenv').config()
+
 // We define Express
 const express = require('express')
 
@@ -20,11 +24,13 @@ const cookieParser = require('cookie-parser')
 // We import the Cross-Origin Resource Sharing middleware
 const cors = require('cors')
 
-//
+// Setting the CORS options
 const corsOptions = require('./config/corsOptions')
 
 // We define the constant for the port
 const PORT = process.env.PORT || 3500
+
+console.log(process.env.NODE_ENV)
 
 // 'logger' middleware to track requests
 app.use(logger)
