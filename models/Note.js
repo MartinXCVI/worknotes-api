@@ -2,7 +2,7 @@
  schema enforcement, and model validation for MongoDB */
 const mongoose = require('mongoose')
 // Autoincrement plugin for Mongoose
-const AutoIncrement = require('mongoose-sequence')
+const AutoIncrement = require('mongoose-sequence')(mongoose)
 
  /* Creating our 'user' Schema that 
  allows us to have a data model */
