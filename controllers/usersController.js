@@ -20,7 +20,7 @@ const getAllUsers = asyncHandler(async (req, res)=> {
   // We prevent the password to be sent back to the client
   // lean() method to return JSON instead of a Mongoose document
   const users = await User.find().select('-password').lean()
-  if(!users) {
+  if(!users?.length) {
     return res.status(400).json({ message: 'No users found' })
   }
   res.json(users)
@@ -118,21 +118,27 @@ const deleteUser = asyncHandler(async (req, res)=> {
   }
 
   // preventing the deletion of users with assigned notes
-  const notes = await Note.findOne({ user: id }).lean().exec()
-  if(notes?.length) {
+  const note = await Note.findOne({ user: id }).lean().exec()
+  if(note) {
     return res.status(400).json({ message: 'User currently has assigned notes' })
   }
 
+  // Checking if the user to be deleted exists
   const user = await User.findById(id).exec()
 
   if(!user) {
     return res.status(400).json({ message: 'User not found' })
   }
+
+  // Extracting necessary data before deletion
+  const { username, _id } = user
+
   // The full user object that is deleted
-  const result = await user.deleteOne()
-  // Delete message
-  const reply = `Username ${result.username} with ID ${result.id} has been successfully deleted`
-  res.json(reply)
+  await user.deleteOne()
+
+  // Delete message with the extracted data before deletion
+  const reply = `Username ${username} with ID ${_id} has been successfully deleted`
+  res.json({ message: reply })
 })
 
 module.exports = {
