@@ -66,6 +66,8 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 app.use('/', require('./routes/root'))
 // We require the users rout
 app.use('/users', require('./routes/userRoutes'))
+// We require the notes rout
+app.use('/notes', require('./routes/noteRoutes'))
 
 // Redirection to 'error' page
 app.all('*', (req, res)=> {
