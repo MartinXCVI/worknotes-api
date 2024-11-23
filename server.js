@@ -64,6 +64,8 @@ app.use('/', express.static(path.join(__dirname, 'public')))
 
 // We require the root of our router
 app.use('/', require('./routes/root'))
+// We require the auth route
+app.use('/auth', require('./routes/authRoutes'))
 // We require the users rout
 app.use('/users', require('./routes/userRoutes'))
 // We require the notes rout
