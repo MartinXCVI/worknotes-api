@@ -4,15 +4,19 @@ const express = require('express')
 const router = express.Router()
 // We require our notes controllers
 const authController = require('../controllers/authController')
+// We require our login limiter
+const loginLimiter = require('../middleware/loginLimiter')
 
 // Root rout
 router.route('/')
-  .post()
+  .post(loginLimiter, authController.login)
+
 // Refresh rout
 router.route('/refresh')
-  .get()
+  .get(authController.refresh)
+
 // Logout rout
 router.route('/logout')
-  .post()
+  .post(authController.logout)
 
 module.exports = router
