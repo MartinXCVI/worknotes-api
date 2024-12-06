@@ -35,12 +35,12 @@ const createNewUser = asyncHandler(async (req, res)=> {
   const { username, password, roles } = req.body
 
   // Confirming data
-  if(!username || !password || !Array.isArray(roles) || !roles.length) {
+  if(!username || !password) {
     return res.status(400).json({ message: 'All fields are required' })
   }
   // Checking for duplicates
   // Mongoose exec() will execute the query and return a Promise
-  const duplicate = await User.findOne({ username }).lean().exec()
+  const duplicate = await User.findOne({ username }).collation({ locale: 'en', strength: 2 }).lean().exec()
 
   if(duplicate) {
     return res.status(409).json({ message: 'Duplicated username' })
@@ -50,7 +50,9 @@ const createNewUser = asyncHandler(async (req, res)=> {
   const hashedPass = await bcrypt.hash(password, 10) // salt rounds
 
   // Creating the user object
-  const userObject = { username, "password": hashedPass, roles }
+  const userObject = (!Array.isArray(roles) || !roles.length)
+    ? { username, "password": hashedPass }
+    : { username, "password": hashedPass, roles }
 
   // Creating and storing a new user
   const user = await User.create(userObject)
@@ -84,7 +86,7 @@ const updateUser = asyncHandler(async (req, res)=> {
   }
 
   // Checking for duplicate
-  const duplicate = await User.findOne({ username }).lean().exec()
+  const duplicate = await User.findOne({ username }).collation({ locale: 'en', strength: 2 }).lean().exec()
 
   // Allow updates to the original user
   if(duplicate && duplicate?._id.toString() !== id) {

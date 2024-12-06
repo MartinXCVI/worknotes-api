@@ -15,12 +15,10 @@ const userSchema = new mongoose.Schema({
     required: true
   },
   // Users may have more than 1 role so we define it as an array
-  roles: [
-    {
-      type: String,
-      default: "Employee"
-    }
-  ],
+  roles: {
+    type: [String],
+    default: ["Employee"]
+  },
   active: {
     type: Boolean,
     default: true
