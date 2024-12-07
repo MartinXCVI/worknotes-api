@@ -14,7 +14,7 @@ const errorHandler = (error, req, res, next)=> {
   res.status(status)
 
   // Our response in JSON format
-  res.json({ message: error.message })
+  res.json({ message: error.message, isError: true })
 }
 
 module.exports = errorHandler
