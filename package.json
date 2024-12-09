@@ -7,9 +7,9 @@
     "dev": "nodemon server"
   },
   "keywords": [],
-  "author": "",
+  "author": "MartinXCVI",
   "license": "ISC",
-  "description": "workNotes MERN project",
+  "description": "WorkNotes MERN project's API",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cookie-parser": "^1.4.7",
