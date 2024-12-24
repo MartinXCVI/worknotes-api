@@ -8,6 +8,9 @@ const express = require('express')
 // We define our app
 const app = express()
 
+// Trust the proxy to read the X-Forwarded-For header
+app.set('trust proxy', true);
+
 /* We import the 'path' module to provide utilities 
 for working with file and directory paths */
 const path = require('node:path')
