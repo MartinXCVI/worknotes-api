@@ -9,7 +9,7 @@ const express = require('express')
 const app = express()
 
 // Trust the proxy to read the X-Forwarded-For header
-app.set('trust proxy', true);
+app.set('trust proxy', 1)
 
 /* We import the 'path' module to provide utilities 
 for working with file and directory paths */
