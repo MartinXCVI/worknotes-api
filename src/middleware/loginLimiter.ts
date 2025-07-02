@@ -1,14 +1,17 @@
-// Requiring express-rate-limit middleware
-const rateLimit = require('express-rate-limit')
-// We import our helper function
-const { logEvents } = require('./logger')
+// Importing Express interfaces
+import { Request, Response, NextFunction } from 'express'
+// express-rate-limit middleware imports
+import rateLimit from 'express-rate-limit'
+import { Options } from 'express-rate-limit'
+// Importing helper function for logging events
+import { logEvents } from './logger.js'
 
 const loginLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 5, // Limit each IP to 5 login requests per `window` per minute
   message:
     { message: 'Too many login attempts from this IP, please try again after 60 seconds' },
-    handler: (req, res, next, options) => {
+    handler: (req: Request, res: Response, next: NextFunction, options: Options) => {
       logEvents(`Too Many Requests: ${options.message.message}\t${req.method}\t${req.url}\t${req.headers.origin}`, 'errLog.log')
       res.status(options.statusCode).send(options.message)
     },
@@ -16,4 +19,4 @@ const loginLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
-module.exports = loginLimiter
+export default loginLimiter
