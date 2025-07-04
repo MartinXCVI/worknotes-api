@@ -7,7 +7,6 @@ import { IDeleteNote } from "./interfaces/IDeleteNote.js"
 // Importing models
 import UserModel from "../models/User.model.js"
 import NoteModel from "../models/Note.model.js"
-
 /* Importing the Express Async Hanlder for 
 handling exceptions inside of async express routes
 and passing them to your express error handlers */

@@ -1,10 +1,9 @@
-/* ENVIRONMENT VARIABLES SETUP */
-import dotenv from "dotenv"
-dotenv.config()
+/* ENVIRONMENT VARIABLES IMPORTS */
+import { NODE_ENV, PORT_ENV } from "./config/env.js"
 
 /* ES Module patch for __dirname */
 import { fileURLToPath } from "node:url"
-import { dirname, join } from "node:path"
+import { dirname } from "node:path"
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
@@ -44,9 +43,9 @@ import userRoutes from './routes/user.routes.js'
 import noteRoutes from './routes/note.routes.js'
 
 // Defining the constant for the port
-const PORT = process.env.PORT || 3500
+const PORT = PORT_ENV || 3500
 // Logging in the console our Node environment variable
-console.log(process.env.NODE_ENV)
+console.log(NODE_ENV)
 
 // Calling the DB connection function
 connectDB()

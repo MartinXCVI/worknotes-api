@@ -1,5 +1,8 @@
+// Importing main allowed origin
+import { CLIENT_URL } from "./env.js"
+
 const allowedOrigins: string[] = [
-  'http://localhost:5173',
+  CLIENT_URL,
 ]
 
 export { allowedOrigins }

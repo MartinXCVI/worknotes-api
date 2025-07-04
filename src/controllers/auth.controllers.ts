@@ -1,5 +1,7 @@
 // Importing Express interfaces
 import { Request, Response } from "express"
+// Environment variables imports
+import { ACCESS_TOKEN_SECRET, NODE_ENV, REFRESH_TOKEN_SECRET } from "../config/env.js"
 // Importing custom interfaces
 import { ILogin } from "./interfaces/ILogin.js"
 // Importing the User model
@@ -48,21 +50,21 @@ const login = asyncHandler(async (req: Request, res: Response): Promise<void> =>
         "roles": foundUser.roles
       }
     },
-    String(process.env.ACCESS_TOKEN_SECRET),
+    ACCESS_TOKEN_SECRET,
     { expiresIn: '15m' }
   )
 
   const refreshToken = jwt.sign(
     { "username": foundUser.username },
-    String(process.env.REFRESH_TOKEN_SECRET),
+    REFRESH_TOKEN_SECRET,
     { expiresIn: '7d' }
   )
 
   // Create secure cookie with refresh token 
   res.cookie('jwt', refreshToken, {
     httpOnly: true, // accessible only by web server 
-    secure: process.env.NODE_ENV === 'production', // https
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookie 
+    secure: NODE_ENV === 'production', // https
+    sameSite: NODE_ENV === 'production' ? 'none' : 'lax', // cross-site cookie 
     maxAge: 7 * 24 * 60 * 60 * 1000 //cookie expiry: set to match rT
   })
   // Send accessToken containing username and roles 
@@ -89,7 +91,7 @@ const refresh = (req: Request, res: Response): void => {
   // Verifying the token
   jwt.verify(
     refreshToken,
-    String(process.env.REFRESH_TOKEN_SECRET),
+    REFRESH_TOKEN_SECRET,
     async (error: any, decoded: any) => {
       // Handling the error
       if(error || !decoded || typeof decoded !== 'object' || !('username' in decoded)) {
@@ -114,7 +116,7 @@ const refresh = (req: Request, res: Response): void => {
               "roles": foundUser.roles
             }
           },
-          String(process.env.ACCESS_TOKEN_SECRET),
+          ACCESS_TOKEN_SECRET,
           { expiresIn: '15m' }
         )
         // Responding with the accessToken
@@ -152,8 +154,8 @@ const logout = (req: Request, res: Response): void => {
     /* passing all the same options 
     when we created the cookie */
     httpOnly: true, 
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', 
-    secure: process.env.NODE_ENV === 'production'
+    sameSite: NODE_ENV === 'production' ? 'none' : 'lax', 
+    secure: NODE_ENV === 'production'
   })
   console.log('User logged out. Cookie cleared.')
   // Success response

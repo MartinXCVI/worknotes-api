@@ -1,8 +1,11 @@
 // Importing Express interfaces
 import { Request, Response, NextFunction } from 'express'
 import { IDecodedUser } from '../interfaces/IDecodedUser.js'
+// Environment variables imports
+import { ACCESS_TOKEN_SECRET } from '../config/env.js'
 // JSON web token
 import jwt from 'jsonwebtoken'
+
 
 const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
   /* Making sure there is an authorization in the headers
@@ -21,7 +24,7 @@ const verifyJWT = (req: Request, res: Response, next: NextFunction): void => {
   const token = authHeader.split(' ')[1]
 
   // Defining secret argument for jwt.verify()
-  const secret = process.env.ACCESS_TOKEN_SECRET
+  const secret = ACCESS_TOKEN_SECRET
   if(!secret) {
     throw new Error('ACCESS_TOKEN_SECRET is not defined')
   }
